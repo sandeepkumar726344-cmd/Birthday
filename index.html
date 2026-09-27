@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic Birthday Surprise!</title>
+    <!-- Premium Fonts Import -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. Global & Background Setup --- */
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0B0C10 100%);
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1; /* Background par rahega */
+            pointer-events: none;
+        }
+
+        #ui-container {
+            position: relative;
+            z-index: 10; /* Canvas ke upar */
+            width: 100%; height: 100%;
+            display: none; /* Button click ke baad dikhega */
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- 2. Start Button --- */
+        #start-screen {
+            position: absolute;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%; height: 100%;
+            background: rgba(11, 12, 16, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        #start-btn {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(45deg, #ff007f, #ff00ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 0, 127, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: pulse 1.5s infinite;
+        }
+        #start-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(255, 0, 127, 0.8);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
+        }
+
+        /* --- 3. Text Animations --- */
+        #happy-birthday {
+            font-size: 3.5rem;
+            margin-top: 10vh;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px currentColor;
+            animation: colorChange 4s infinite alternate;
+        }
+        @keyframes colorChange {
+            0% { color: #ff3366; } 33% { color: #33ccff; } 66% { color: #ffcc00; } 100% { color: #cc33ff; }
+        }
+
+        /* Dancing Name Setup */
+        #friend-name {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            height: 80px;
+            text-transform: capitalize; /* 🔥 First Letter Auto Capitalize Karega 🔥 */
+        }
+        .letter {
+            font-size: 4rem;
+            font-family: 'Pacifico', cursive; /* Stylish font */
+            color: #ffffff;
+            text-shadow: 0 0 20px #ffffff, 2px 5px 5px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .wave-anim {
+            animation: wave 1s infinite alternate;
+            opacity: 1 !important;
+        }
+        @keyframes wave {
+            0% { transform: translateY(15px); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* --- 4. CSS 3D Cake --- */
+        .cake {
+            position: absolute;
+            bottom: 25vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tier { border-radius: 10px 10px 0 0; position: relative; box-shadow: inset 0 -10px 15px rgba(0,0,0,0.3);}
+        .tier3 { width: 120px; height: 50px; background: #F9A826; z-index: 4; }
+        .tier2 { width: 170px; height: 60px; background: #04C2C9; z-index: 3; }
+        .tier1 { width: 220px; height: 70px; background: #FF3F8E; z-index: 2; }
+        .plate { width: 280px; height: 15px; background: #E0E5EC; border-radius: 20px; z-index: 1; box-shadow: 0 15px 20px rgba(0,0,0,0.6);}
+        
+        .candles { display: flex; gap: 25px; position: absolute; top: -40px; z-index: 5;}
+        .candle { width: 10px; height: 40px; background: repeating-linear-gradient(-45deg, white, white 5px, #ff3366 5px, #ff3366 10px); border-radius: 3px; position: relative;}
+        .flame {
+            width: 14px; height: 22px;
+            background: #FFD700;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute; top: -22px; left: -2px;
+            box-shadow: 0 0 15px #FF4500, 0 0 30px #FFD700;
+            animation: flicker 0.15s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* --- 5. Instagram Premium Button --- */
+        .insta-btn {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            /* Insta Gradient */
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            box-shadow: 0 5px 15px rgba(220, 39, 67, 0.4);
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+        .insta-btn:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 10px 25px rgba(220, 39, 67, 0.7);
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- YAHAN APNE MP3 SONG KA LINK DAALEIN -->
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <button id="start-btn">Tap to Open Surprise! 🎁</button>
+    </div>
+
+    <!-- Canvas for Particles -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Main Content -->
+    <div id="ui-container">
+        <div id="happy-birthday">🎉 Happy Birthday 🎉</div>
+        <div id="friend-name"></div>
+
+        <div class="cake">
+            <div class="candles">
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
+            </div>
+            <div class="tier tier3"></div>
+            <div class="tier tier2"></div>
+            <div class="tier tier1"></div>
+            <div class="plate"></div>
+        </div>
+
+        <!-- 🔥 YAHAN APNI INSTAGRAM ID KA LINK DAALEIN 🔥 -->
+        <a href="https://instagram.com/nothing_.0208" target="_blank" class="insta-btn">
+            📸 Instagram
+        </a>
+    </div>
+
+    <!-- --- JAVASCRIPT FOR LOGIC & ANIMATION --- -->
+    <script>
+        // 🔥 YAHAN DOST KA NAAM DAALEIN 🔥
+        const NAME = "Anu"; // Pura capital nahi kiya hai taaki sirf pehla letter bada aaye
+        
+        const nameContainer = document.getElementById('friend-name');
+        
+        // Naam ko letters me tod kar HTML me daalna
+        for(let i=0; i<NAME.length; i++) {
+            let span = document.createElement('span');
+            span.className = 'letter';
+            span.innerHTML = NAME[i] === ' ' ? '&nbsp;' : NAME[i];
+            nameContainer.appendChild(span);
+        }
+
+        const letters = document.querySelectorAll('.letter');
+
+        // Button Click Event (Start Animation)
+        document.getElementById('start-btn').addEventListener('click', function() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('ui-container').style.display = 'flex';
+            
+            // Play Music
+            let music = document.getElementById('bg-music');
+            music.volume = 0.3; // Thodi aawaz control
+            music.play().catch(e => console.log("Music blocked"));
+
+            // Dancing Name Reveal Logic
+            let delay = 500; // 0.5 second baad naam aana shuru hoga
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    letter.classList.add('wave-anim');
+                    // Har letter ka wave thoda late shuru hoga (Ripple/Wave effect)
+                    letter.style.animationDelay = `${index * 0.15}s`;
+                }, delay);
+                delay += 120; // Typewriter ki speed
+            });
+        });
+
+        // --- HTML5 CANVAS PARTICLE ENGINE (Balloons & Confetti) ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let particles = [];
+        let balloons = [];
+        const confettiColors = ["#FF3F8E", "#04C2C9", "#2E55C1", "#F9A826", "#00FF00", "#FFD700", "#FFFFFF"];
+        const balloonColors = ["#FF1493", "#00BFFF", "#FFD700", "#32CD32", "#FF4500", "#9400D3"];
+
+        // Generate Confetti
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 4 + 2,
+                d: Math.random() * 80, 
+                color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+                speed: Math.random() * 3 + 1.5,
+                angle: Math.random() * 360
+            });
+        }
+
+        // Generate Balloons
+        for (let i = 0; i < 12; i++) {
+            balloons.push({
+                x: Math.random() * canvas.width,
+                y: canvas.height + Math.random() * 500,
+                r: Math.random() * 15 + 25, 
+                color: balloonColors[Math.floor(Math.random() * balloonColors.length)],
+                speed: Math.random() * 2 + 1,
+                sway: Math.random() * 100
+            });
+        }
+
+        let time = 0;
+
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            time += 0.02;
+
+            // Draw Confetti
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                p.y += p.speed;
+                p.x += Math.sin(time + p.d) * 1.5; // Wind effect
+
+                if (p.y > canvas.height) {
+                    p.y = -20;
+                    p.x = Math.random() * canvas.width;
+                }
+            }
+
+            // Draw Balloons
+            for (let i = 0; i < balloons.length; i++) {
+                let b = balloons[i];
+                let swayX = b.x + Math.sin(time + b.sway) * 20; // Balloons move slightly left/right
+
+                // Draw Balloon string
+                ctx.beginPath();
+                ctx.moveTo(swayX, b.y + b.r);
+                ctx.quadraticCurveTo(swayX - 10, b.y + b.r + 20, swayX, b.y + b.r + 50);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Draw Balloon Body
+                ctx.beginPath();
+                ctx.arc(swayX, b.y, b.r, 0, Math.PI * 2);
+                ctx.fillStyle = b.color;
+                ctx.fill();
+                
+                // Balloon Highlight (Shiny effect)
+                ctx.beginPath();
+                ctx.arc(swayX - b.r/3, b.y - b.r/3, b.r/4, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+                ctx.fill();
+
+                b.y -= b.speed; // Move up
+
+                if (b.y < -100) {
+                    b.y = canvas.height + Math.random() * 200;
+                    b.x = Math.random() * canvas.width;
+                }
+            }
+
+            requestAnimationFrame(drawCanvas);
+        }
+        
+        // Loop start
+        drawCanvas();
+
+    </script>
+</body>
+</html>
