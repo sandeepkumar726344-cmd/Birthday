@@ -3,103 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Epic Birthday Surprise!</title>
+    <title>Epic Birthday Surprise for Jyant!</title>
     <!-- Premium Fonts Import -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
         /* --- 1. Global & Background Setup --- */
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0B0C10 100%);
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
+        body, html {
+            width: 100%;
+            height: 100%;
+            background: #0f0c29; 
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Fixed background canvas */
         canvas {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0;
-            z-index: 1; /* Background par rahega */
+            z-index: 1;
             pointer-events: none;
         }
 
-        #ui-container {
-            position: relative;
-            z-index: 10; /* Canvas ke upar */
-            width: 100%; height: 100%;
-            display: none; /* Button click ke baad dikhega */
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* --- 2. Start Button --- */
+        /* --- 2. Start Button Screen --- */
         #start-screen {
-            position: absolute;
+            position: fixed;
             z-index: 100;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%; height: 100%;
-            background: rgba(11, 12, 16, 0.8);
-            backdrop-filter: blur(5px);
+            background: rgba(15, 12, 41, 0.9);
+            backdrop-filter: blur(10px);
+            transition: opacity 0.5s ease;
         }
 
         #start-btn {
-            padding: 15px 40px;
+            padding: 18px 45px;
             font-size: 1.5rem;
+            font-weight: 600;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(45deg, #ff007f, #ff00ff);
+            background: linear-gradient(45deg, #ff007f, #7928ca);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 0, 127, 0.5);
+            box-shadow: 0 10px 25px rgba(255, 0, 127, 0.5);
             transition: transform 0.3s, box-shadow 0.3s;
             animation: pulse 1.5s infinite;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         #start-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 15px 30px rgba(255, 0, 127, 0.8);
+            box-shadow: 0 15px 35px rgba(255, 0, 127, 0.8);
         }
         @keyframes pulse {
             0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); }
         }
 
-        /* --- 3. Text Animations --- */
+        /* --- 3. Main UI Container --- */
+        #ui-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            min-height: 100vh;
+            display: none; /* Button click ke baad flex hoga */
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 100px 20px;
+        }
+
+        /* --- 4. Text Animations --- */
         #happy-birthday {
-            font-size: 3.5rem;
-            margin-top: 10vh;
+            font-size: clamp(2.5rem, 6vw, 4.5rem); /* Responsive font */
+            font-weight: 800;
+            text-align: center;
             text-transform: uppercase;
+            margin-top: 20px;
             text-shadow: 0 0 15px currentColor;
             animation: colorChange 4s infinite alternate;
         }
         @keyframes colorChange {
-            0% { color: #ff3366; } 33% { color: #33ccff; } 66% { color: #ffcc00; } 100% { color: #cc33ff; }
+            0% { color: #ff3366; text-shadow: 0 0 20px #ff3366; } 
+            33% { color: #00e5ff; text-shadow: 0 0 20px #00e5ff; } 
+            66% { color: #ffea00; text-shadow: 0 0 20px #ffea00; } 
+            100% { color: #b400ff; text-shadow: 0 0 20px #b400ff; }
         }
 
-        /* Dancing Name Setup */
         #friend-name {
             display: flex;
-            gap: 8px;
-            margin-top: 15px;
-            height: 80px;
-            text-transform: capitalize; /* 🔥 First Letter Auto Capitalize Karega 🔥 */
+            gap: clamp(4px, 2vw, 10px);
+            margin-top: 10px;
+            text-transform: capitalize;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .letter {
-            font-size: 4rem;
-            font-family: 'Pacifico', cursive; /* Stylish font */
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-family: 'Pacifico', cursive;
             color: #ffffff;
-            text-shadow: 0 0 20px #ffffff, 2px 5px 5px rgba(0,0,0,0.5);
+            text-shadow: 0 0 15px #ffffff, 2px 5px 5px rgba(0,0,0,0.5);
             opacity: 0;
             transform: translateY(20px);
         }
         .wave-anim {
-            animation: wave 1s infinite alternate;
+            animation: wave 1.2s infinite alternate ease-in-out;
             opacity: 1 !important;
         }
         @keyframes wave {
@@ -107,68 +125,118 @@
             100% { transform: translateY(-15px); }
         }
 
-        /* --- 4. CSS 3D Cake --- */
+        /* --- 5. Responsive CSS 3D Cake --- */
+        .cake-wrapper {
+            margin-top: 80px;
+            margin-bottom: 50px;
+            transform: scale(0.8); /* Scale for mobile fit */
+        }
+        @media(min-width: 768px) {
+            .cake-wrapper { transform: scale(1); margin-top: 100px; }
+        }
         .cake {
-            position: absolute;
-            bottom: 25vh;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        .tier { border-radius: 10px 10px 0 0; position: relative; box-shadow: inset 0 -10px 15px rgba(0,0,0,0.3);}
+        .tier { border-radius: 10px 10px 0 0; position: relative; box-shadow: inset 0 -10px 20px rgba(0,0,0,0.4);}
         .tier3 { width: 120px; height: 50px; background: #F9A826; z-index: 4; }
         .tier2 { width: 170px; height: 60px; background: #04C2C9; z-index: 3; }
         .tier1 { width: 220px; height: 70px; background: #FF3F8E; z-index: 2; }
-        .plate { width: 280px; height: 15px; background: #E0E5EC; border-radius: 20px; z-index: 1; box-shadow: 0 15px 20px rgba(0,0,0,0.6);}
+        .plate { width: 280px; height: 15px; background: #E0E5EC; border-radius: 20px; z-index: 1; box-shadow: 0 15px 25px rgba(0,0,0,0.7);}
         
         .candles { display: flex; gap: 25px; position: absolute; top: -40px; z-index: 5;}
-        .candle { width: 10px; height: 40px; background: repeating-linear-gradient(-45deg, white, white 5px, #ff3366 5px, #ff3366 10px); border-radius: 3px; position: relative;}
+        .candle { width: 12px; height: 40px; background: repeating-linear-gradient(-45deg, white, white 5px, #ff3366 5px, #ff3366 10px); border-radius: 4px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.3);}
         .flame {
-            width: 14px; height: 22px;
+            width: 16px; height: 26px;
             background: #FFD700;
             border-radius: 50% 50% 20% 20%;
-            position: absolute; top: -22px; left: -2px;
-            box-shadow: 0 0 15px #FF4500, 0 0 30px #FFD700;
+            position: absolute; top: -25px; left: -2px;
+            box-shadow: 0 0 20px #FF4500, 0 0 40px #FFD700;
             animation: flicker 0.15s infinite alternate;
         }
         @keyframes flicker {
-            0% { transform: scale(0.9); opacity: 0.8; }
-            100% { transform: scale(1.1); opacity: 1; }
+            0% { transform: scale(0.9) skewX(-2deg); opacity: 0.8; }
+            100% { transform: scale(1.1) skewX(2deg); opacity: 1; }
         }
 
-        /* --- 5. Instagram Premium Button --- */
+        /* --- 6. Photo Gallery Section (Glassmorphism) --- */
+        .gallery-title {
+            font-size: 2rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-family: 'Pacifico', cursive;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            text-align: center;
+        }
+
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .photo-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .photo-card:hover {
+            transform: translateY(-10px);
+        }
+
+        /* --- 7. Instagram Premium Button (Fixed at Bottom) --- */
+        .insta-btn-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+        
         .insta-btn {
-            position: absolute;
-            bottom: 40px;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
             font-family: 'Poppins', sans-serif;
             color: white;
             text-decoration: none;
-            border-radius: 30px;
-            /* Insta Gradient */
+            border-radius: 50px;
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            box-shadow: 0 5px 15px rgba(220, 39, 67, 0.4);
+            box-shadow: 0 5px 20px rgba(220, 39, 67, 0.6);
             transition: all 0.3s ease;
-            animation: float 3s ease-in-out infinite;
+            animation: floatBtn 3s ease-in-out infinite;
         }
         .insta-btn:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 10px 25px rgba(220, 39, 67, 0.7);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(220, 39, 67, 0.9);
         }
-        @keyframes float {
+        @keyframes floatBtn {
             0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
             100% { transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <!-- YAHAN APNE MP3 SONG KA LINK DAALEIN -->
+    <!-- Background Music -->
     <audio id="bg-music" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
@@ -186,31 +254,61 @@
         <div id="happy-birthday">🎉 Happy Birthday 🎉</div>
         <div id="friend-name"></div>
 
-        <div class="cake">
-            <div class="candles">
-                <div class="candle"><div class="flame"></div></div>
-                <div class="candle"><div class="flame"></div></div>
-                <div class="candle"><div class="flame"></div></div>
+        <!-- Cake Section -->
+        <div class="cake-wrapper">
+            <div class="cake">
+                <div class="candles">
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                    <div class="candle"><div class="flame"></div></div>
+                </div>
+                <div class="tier tier3"></div>
+                <div class="tier tier2"></div>
+                <div class="tier tier1"></div>
+                <div class="plate"></div>
             </div>
-            <div class="tier tier3"></div>
-            <div class="tier tier2"></div>
-            <div class="tier tier1"></div>
-            <div class="plate"></div>
         </div>
 
-        <!-- 🔥 YAHAN APNI INSTAGRAM ID KA LINK DAALEIN 🔥 -->
-        <a href="https://instagram.com/nothing_.0208" target="_blank" class="insta-btn">
-            📸 Instagram
+        <!-- Instagram Photos Gallery -->
+        <div class="gallery-title">Memories ✨</div>
+        <div class="gallery-container">
+            <!-- Photo 1 -->
+            <div class="photo-card">
+                <iframe src="https://www.instagram.com/p/DLQC910SSDz/embed" width="320" height="400" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 10px; background: white;"></iframe>
+            </div>
+            <!-- Photo 2 -->
+            <div class="photo-card">
+                <iframe src="https://www.instagram.com/p/DNn1KxDs30W/embed" width="320" height="400" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 10px; background: white;"></iframe>
+            </div>
+            <!-- Photo 3 -->
+            <div class="photo-card">
+                <iframe src="https://www.instagram.com/p/DQEvf5YDD0p/embed" width="320" height="400" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 10px; background: white;"></iframe>
+            </div>
+            <!-- Photo 4 -->
+            <div class="photo-card">
+                <iframe src="https://www.instagram.com/p/DVDhnOeDMpu/embed" width="320" height="400" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 10px; background: white;"></iframe>
+            </div>
+            <!-- Photo 5 -->
+            <div class="photo-card">
+                <iframe src="https://www.instagram.com/p/DdBfvqwspFM/embed" width="320" height="400" frameborder="0" scrolling="no" allowtransparency="true" style="border-radius: 10px; background: white;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Instagram Button -->
+    <div class="insta-btn-container" id="insta-btn-wrapper" style="display: none;">
+        <a href="https://www.instagram.com/aman41764?psln=eDV2M2ZxdGhlMTFx" target="_blank" class="insta-btn">
+            📸 Follow Jayant
         </a>
     </div>
 
     <!-- --- JAVASCRIPT FOR LOGIC & ANIMATION --- -->
     <script>
-        // 🔥 YAHAN DOST KA NAAM DAALEIN 🔥
-        const NAME = "Richa"; 
+        // Birthday Boy Name
+        const NAME = "Jayant Kumar"; 
         const nameContainer = document.getElementById('friend-name');
         
-        // Naam ko letters me tod kar HTML me daalna
+        // Split name into letters for animation
         for(let i=0; i<NAME.length; i++) {
             let span = document.createElement('span');
             span.className = 'letter';
@@ -220,29 +318,34 @@
 
         const letters = document.querySelectorAll('.letter');
 
-        // Button Click Event (Start Animation)
+        // Start Button Logic
         document.getElementById('start-btn').addEventListener('click', function() {
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('ui-container').style.display = 'flex';
+            let startScreen = document.getElementById('start-screen');
+            startScreen.style.opacity = '0';
             
-            // Play Music
-            let music = document.getElementById('bg-music');
-            music.volume = 0.3; // Thodi aawaz control
-            music.play().catch(e => console.log("Music blocked"));
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                document.getElementById('ui-container').style.display = 'flex';
+                document.getElementById('insta-btn-wrapper').style.display = 'block';
+                
+                // Play Music
+                let music = document.getElementById('bg-music');
+                music.volume = 0.4;
+                music.play().catch(e => console.log("Music blocked by browser autoplay policy"));
 
-            // Dancing Name Reveal Logic
-            let delay = 500; // 0.5 second baad naam aana shuru hoga
-            letters.forEach((letter, index) => {
-                setTimeout(() => {
-                    letter.classList.add('wave-anim');
-                    // Har letter ka wave thoda late shuru hoga (Ripple/Wave effect)
-                    letter.style.animationDelay = `${index * 0.15}s`;
-                }, delay);
-                delay += 120; // Typewriter ki speed
-            });
+                // Dancing Name Reveal Logic
+                let delay = 500;
+                letters.forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.classList.add('wave-anim');
+                        letter.style.animationDelay = `${index * 0.1}s`;
+                    }, delay);
+                    delay += 100;
+                });
+            }, 500); // Wait for fade out
         });
 
-        // --- HTML5 CANVAS PARTICLE ENGINE (Balloons & Confetti) ---
+        // --- HTML5 CANVAS PARTICLE ENGINE ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         
@@ -255,11 +358,11 @@
 
         let particles = [];
         let balloons = [];
-        const confettiColors = ["#FF3F8E", "#04C2C9", "#2E55C1", "#F9A826", "#00FF00", "#FFD700", "#FFFFFF"];
-        const balloonColors = ["#FF1493", "#00BFFF", "#FFD700", "#32CD32", "#FF4500", "#9400D3"];
+        const confettiColors = ["#FF3F8E", "#04C2C9", "#2E55C1", "#F9A826", "#00FF00", "#FFD700", "#FFFFFF", "#a200ff"];
+        const balloonColors = ["#FF1493", "#00BFFF", "#FFD700", "#32CD32", "#FF4500", "#9400D3", "#ff007f"];
 
         // Generate Confetti
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 120; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height - canvas.height,
@@ -272,13 +375,13 @@
         }
 
         // Generate Balloons
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 15; i++) {
             balloons.push({
                 x: Math.random() * canvas.width,
-                y: canvas.height + Math.random() * 500,
+                y: canvas.height + Math.random() * 800,
                 r: Math.random() * 15 + 25, 
                 color: balloonColors[Math.floor(Math.random() * balloonColors.length)],
-                speed: Math.random() * 2 + 1,
+                speed: Math.random() * 1.5 + 0.8,
                 sway: Math.random() * 100
             });
         }
@@ -298,7 +401,7 @@
                 ctx.fill();
 
                 p.y += p.speed;
-                p.x += Math.sin(time + p.d) * 1.5; // Wind effect
+                p.x += Math.sin(time + p.d) * 1.5;
 
                 if (p.y > canvas.height) {
                     p.y = -20;
@@ -309,32 +412,32 @@
             // Draw Balloons
             for (let i = 0; i < balloons.length; i++) {
                 let b = balloons[i];
-                let swayX = b.x + Math.sin(time + b.sway) * 20; // Balloons move slightly left/right
+                let swayX = b.x + Math.sin(time + b.sway) * 25; 
 
-                // Draw Balloon string
+                // String
                 ctx.beginPath();
                 ctx.moveTo(swayX, b.y + b.r);
-                ctx.quadraticCurveTo(swayX - 10, b.y + b.r + 20, swayX, b.y + b.r + 50);
-                ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+                ctx.quadraticCurveTo(swayX - 10, b.y + b.r + 25, swayX, b.y + b.r + 60);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
 
-                // Draw Balloon Body
+                // Body
                 ctx.beginPath();
                 ctx.arc(swayX, b.y, b.r, 0, Math.PI * 2);
                 ctx.fillStyle = b.color;
                 ctx.fill();
                 
-                // Balloon Highlight (Shiny effect)
+                // Highlight
                 ctx.beginPath();
                 ctx.arc(swayX - b.r/3, b.y - b.r/3, b.r/4, 0, Math.PI * 2);
                 ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
                 ctx.fill();
 
-                b.y -= b.speed; // Move up
+                b.y -= b.speed; 
 
-                if (b.y < -100) {
-                    b.y = canvas.height + Math.random() * 200;
+                if (b.y < -150) {
+                    b.y = canvas.height + Math.random() * 300;
                     b.x = Math.random() * canvas.width;
                 }
             }
@@ -342,9 +445,7 @@
             requestAnimationFrame(drawCanvas);
         }
         
-        // Loop start
         drawCanvas();
-
     </script>
 </body>
 </html>
